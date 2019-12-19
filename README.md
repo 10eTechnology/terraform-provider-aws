@@ -1,3 +1,19 @@
+Rival's fork of terraform-provider-aws
+==================
+This is a fork we'll maintain, and bundle in our Terraform Docker image, in order to pull in various features and bug fixes that are useful or necessary.
+
+Currently based off of: **v2.42.0**
+
+With the following additions:
+
+* https://github.com/terraform-providers/terraform-provider-aws/pull/11335 fix a bug where changing the name of a Route53 record does not delete the old record
+*
+
+Also consider pulling in:
+
+* https://github.com/terraform-providers/terraform-provider-aws/pull/11211 publishing new Lambda versions after making config (non-code) updates
+* https://github.com/terraform-providers/terraform-provider-aws/pull/10487 add Kinesis Stream Consumer resource
+
 Terraform Provider for AWS
 ==================
 
