@@ -7,7 +7,7 @@ Currently based off of: **v2.42.0**
 With the following additions:
 
 * https://github.com/terraform-providers/terraform-provider-aws/pull/11335 fix a bug where changing the name of a Route53 record does not delete the old record
-*
+    * Add jbergknoff-rival/terraform-provider-aws as a remote, fetch it, and `git cherry-pick fe41b2f7f3c0bae81e65e15f61d232e41fb90c0f`
 
 Also consider pulling in:
 
