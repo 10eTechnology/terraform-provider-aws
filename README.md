@@ -1,3 +1,36 @@
+Rival's fork of terraform-provider-aws
+==================
+This is a fork we'll maintain, and bundle in our Terraform Docker image, in order to pull in various features and bug fixes that are useful or necessary.
+
+Currently based off of: **v2.43.0**
+
+With the following additions:
+
+* https://github.com/terraform-providers/terraform-provider-aws/pull/11335 fix a bug where changing the name of a Route53 record does not delete the old record
+    * `git merge --squash PR11335/jbergknoff/route53-delete-before-create`
+* https://github.com/terraform-providers/terraform-provider-aws/pull/11211 publishing new Lambda versions after making config (non-code) updates
+    * `git merge --squash PR11211/b-aws_lambda_function-publish-config-updates`
+* https://github.com/terraform-providers/terraform-provider-aws/pull/10487 add Kinesis Stream Consumer resource
+    * `git merge --squash PR10487/feature/kinesis-stream-consumer`
+
+```
+$ git remote -v
+PR10487 git@github.com:yomagroup/terraform-provider-aws (fetch)
+PR10487 git@github.com:yomagroup/terraform-provider-aws (push)
+PR11211 git@github.com:nemreid/terraform-provider-aws (fetch)
+PR11211 git@github.com:nemreid/terraform-provider-aws (push)
+PR11335 git@github.com:jbergknoff-rival/terraform-provider-aws (fetch)
+PR11335 git@github.com:jbergknoff-rival/terraform-provider-aws (push)
+origin  git@github.com:10etechnology/terraform-provider-aws (fetch)
+origin  git@github.com:10etechnology/terraform-provider-aws (push)
+upstream    git@github.com:terraform-providers/terraform-provider-aws (fetch)
+upstream    git@github.com:terraform-providers/terraform-provider-aws (push)
+```
+
+Also consider pulling in:
+
+* Let ECS task definition data source work gracefully if task definition doesn't exist.
+
 Terraform Provider for AWS
 ==================
 
