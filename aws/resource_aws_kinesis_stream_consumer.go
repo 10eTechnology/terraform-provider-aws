@@ -18,9 +18,6 @@ func resourceAwsKinesisStreamConsumer() *schema.Resource {
 		Create: resourceAwsKinesisStreamConsumerCreate,
 		Read:   resourceAwsKinesisStreamConsumerRead,
 		Delete: resourceAwsKinesisStreamConsumerDelete,
-		Importer: &schema.ResourceImporter{
-			State: schema.ImportStatePassthrough,
-		},
 
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(5 * time.Minute),
@@ -29,7 +26,17 @@ func resourceAwsKinesisStreamConsumer() *schema.Resource {
 
 		Importer: &schema.ResourceImporter{
 			State: func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-				d.Set("name", d.Id())
+				// Use a pipe (|) as a delimiter because it's not allowed as part of a stream name or
+				// a consumer name.
+				// https://docs.aws.amazon.com/kinesis/latest/APIReference/API_CreateStream.html
+				// https://docs.aws.amazon.com/kinesis/latest/APIReference/API_RegisterStreamConsumer.html
+				parts := strings.Split(d.Id(), "|")
+				if len(parts) != 2 {
+					return nil, fmt.Errorf("Error importing aws_kinesis_stream_consumer. Please make sure the ID is in the form <consumer name>|<stream ARN> (e.g. my-consumer|arn:aws:kinesis:us-west-2:123456789012:stream/my-stream)")
+				}
+
+				d.Set("name", parts[0])
+				d.Set("stream_arn", parts[1])
 				return []*schema.ResourceData{d}, nil
 			},
 		},
@@ -97,21 +104,6 @@ func resourceAwsKinesisStreamConsumerCreate(d *schema.ResourceData, meta interfa
 }
 
 func resourceAwsKinesisStreamConsumerRead(d *schema.ResourceData, meta interface{}) error {
-	// If we don't have a name, we're doing an import. Parse the name and stream ARN from the ID.
-	if _, ok := d.GetOk("name"); !ok {
-		// Use a pipe (|) as a delimiter because it's not allowed as part of a stream name or
-		// a consumer name.
-		// https://docs.aws.amazon.com/kinesis/latest/APIReference/API_CreateStream.html
-		// https://docs.aws.amazon.com/kinesis/latest/APIReference/API_RegisterStreamConsumer.html
-		parts := strings.Split(d.Id(), "|")
-		if len(parts) != 2 {
-			return fmt.Errorf("Error importing aws_kinesis_stream_consumer. Please make sure the ID is in the form <consumer name>|<stream ARN> (e.g. my-consumer|arn:aws:kinesis:us-west-2:123456789012:stream/my-stream)")
-		}
-
-		d.Set("name", parts[0])
-		d.Set("stream_arn", parts[1])
-	}
-
 	conn := meta.(*AWSClient).kinesisconn
 	cn := d.Get("name").(string)
 	sa := d.Get("stream_arn").(string)
