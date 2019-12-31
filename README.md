@@ -12,6 +12,7 @@ With the following additions:
     * `git merge --squash PR11211/b-aws_lambda_function-publish-config-updates`
 * https://github.com/terraform-providers/terraform-provider-aws/pull/10487 add Kinesis Stream Consumer resource
     * `git merge --squash PR10487/feature/kinesis-stream-consumer`
+    * Also, added a patch to make it possible to import the resource.
 
 ```
 $ git remote -v
