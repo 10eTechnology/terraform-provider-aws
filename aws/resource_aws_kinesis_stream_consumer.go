@@ -26,13 +26,13 @@ func resourceAwsKinesisStreamConsumer() *schema.Resource {
 
 		Importer: &schema.ResourceImporter{
 			State: func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-				// Use a pipe (|) as a delimiter because it's not allowed as part of a stream name or
+				// Use @ as a delimiter because it's not allowed as part of a stream ARN or
 				// a consumer name.
 				// https://docs.aws.amazon.com/kinesis/latest/APIReference/API_CreateStream.html
 				// https://docs.aws.amazon.com/kinesis/latest/APIReference/API_RegisterStreamConsumer.html
-				parts := strings.Split(d.Id(), "|")
+				parts := strings.Split(d.Id(), "@")
 				if len(parts) != 2 {
-					return nil, fmt.Errorf("Error importing aws_kinesis_stream_consumer. Please make sure the ID is in the form <consumer name>|<stream ARN> (e.g. my-consumer|arn:aws:kinesis:us-west-2:123456789012:stream/my-stream)")
+					return nil, fmt.Errorf("Error importing aws_kinesis_stream_consumer. Please make sure the ID is in the form <consumer name>@<stream ARN> (e.g. my-consumer@arn:aws:kinesis:us-west-2:123456789012:stream/my-stream)")
 				}
 
 				d.Set("name", parts[0])
