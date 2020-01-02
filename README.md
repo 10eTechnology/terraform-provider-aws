@@ -13,6 +13,8 @@ With the following additions:
 * https://github.com/terraform-providers/terraform-provider-aws/pull/10487 add Kinesis Stream Consumer resource
     * `git merge --squash PR10487/feature/kinesis-stream-consumer`
     * Also, added a patch to make it possible to import the resource.
+* (No PR yet) Option on ECS data sources to not error out when resource is missing (https://github.com/terraform-providers/terraform-provider-aws/compare/master...jbergknoff-rival:jbergknoff/ecs-task-definition-forgiving-data-source)
+    * `git merge --squash PR11335/jbergknoff/ecs-task-definition-forgiving-data-source`
 
 ```
 $ git remote -v
